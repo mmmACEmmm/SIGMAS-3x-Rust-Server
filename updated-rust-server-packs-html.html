@@ -1,0 +1,332 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGMAS 3x Rust Server Packs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        :root {
+            --primary-color: #ff6600;
+            --secondary-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2a2a2a;
+            --hover-color: #ff8c00;
+        }
+        
+        body {
+            background-color: var(--secondary-color);
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-image: 
+                linear-gradient(45deg, #222 25%, transparent 25%),
+                linear-gradient(-45deg, #222 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #222 75%),
+                linear-gradient(-45deg, transparent 75%, #222 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .packs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .pack {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary-color);
+        }
+
+        .pack:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(255, 102, 0, 0.15);
+        }
+
+        .pack-header {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ff8c00;
+        }
+
+        .pack h2 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .pack-content {
+            padding: 20px;
+        }
+
+        .items {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .items li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .items li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .price {
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 0;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .buy-btn:hover {
+            background-color: var(--hover-color);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 15% auto;
+            padding: 30px;
+            border: 1px solid var(--primary-color);
+            width: 80%;
+            max-width: 500px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
+        }
+
+        .close {
+            color: var(--primary-color);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--hover-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .packs-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <img src="https://i.ibb.co/qRjxw3b/original-Image.png" alt="SIGMAS Logo" class="logo">
+        <h1>SIGMAS 3x Rust Server Packs</h1>
+        <p class="subtitle">Dominate the battlefield with our premium packs</p>
+    </header>
+
+    <div class="packs-container">
+        <div class="pack">
+            <div class="pack-header">
+                <h2>🐍 VENOM PACK</h2>
+            </div>
+            <div class="pack-content">
+                <ul class="items">
+                    <li>20 AK or LR-300s</li>
+                    <li>20 Holo Sights</li>
+                    <li>160 Meds</li>
+                    <li>20 Full Metal Kits</li>
+                    <li>200k Stone</li>
+                    <li>200k Wood</li>
+                    <li>100k Metal</li>
+                    <li>1k High Quality Metal</li>
+                    <li>25 Turrets</li>
+                    <li>2 M2 with 4x Sight</li>
+                </ul>
+                <div class="price">$20</div>
+                <button class="buy-btn" onclick="openModal('modal1')">Buy Now</button>
+            </div>
+        </div>
+
+        <div class="pack">
+            <div class="pack-header">
+                <h2>🛠️ CONSTRUCTOR PACK</h2>
+            </div>
+            <div class="pack-content">
+                <ul class="items">
+                    <li>10 AK or LR-300s</li>
+                    <li>10 Holo Sights</li>
+                    <li>80 Meds</li>
+                    <li>10 Full Metal Kits</li>
+                    <li>100k Stone</li>
+                    <li>100k Wood</li>
+                    <li>50k Metal</li>
+                    <li>500 High Quality Metal</li>
+                    <li>15 Turrets</li>
+                </ul>
+                <div class="price">$15</div>
+                <button class="buy-btn" onclick="openModal('modal2')">Buy Now</button>
+            </div>
+        </div>
+
+        <div class="pack">
+            <div class="pack-header">
+                <h2>🔥 WARRIOR PACK</h2>
+            </div>
+            <div class="pack-content">
+                <ul class="items">
+                    <li>50 Meds</li>
+                    <li>5 AK or LR-300s</li>
+                </ul>
+                <div class="price">$10</div>
+                <button class="buy-btn" onclick="openModal('modal3')">Buy Now</button>
+            </div>
+        </div>
+
+        <div class="pack">
+            <div class="pack-header">
+                <h2>📦 VIP PACK</h2>
+            </div>
+            <div class="pack-content">
+                <ul class="items">
+                    <li>1 Full Metal Kit</li>
+                    <li>1 Recycler</li>
+                    <li>Queue Skip</li>
+                </ul>
+                <div class="price">$5</div>
+                <button class="buy-btn" onclick="openModal('modal4')">Buy Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal1')">&times;</span>
+        <p>Please ask an admin of the Discord server to purchase this pack.</p>
+    </div>
+</div>
+
+<div id="modal2" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal2')">&times;</span>
+        <p>Please ask an admin of the Discord server to purchase this pack.</p>
+    </div>
+</div>
+
+<div id="modal3" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal3')">&times;</span>
+        <p>Please ask an admin of the Discord server to purchase this pack.</p>
+    </div>
+</div>
+
+<div id="modal4" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modal4')">&times;</span>
+        <p>Please ask an admin of the Discord server to purchase this pack.</p>
+    </div>
+</div>
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target.className === 'modal') {
+            event.target.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
